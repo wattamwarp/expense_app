@@ -25,8 +25,8 @@ class _LandingPageState extends State<LandingPage> {
     ];
 
     return Scaffold(
-      body: SafeArea(
-        child: Container(
+      body: SafeArea(child:
+         Container(
           height: _height,
           width: _width,
           color: Color(0xff1b1e31),
@@ -47,6 +47,16 @@ class _LandingPageState extends State<LandingPage> {
                             style: TextStyle(
                                 color: Color(0xff565975), fontSize: 12),
                           )),
+                      InkWell(
+                        onTap: () {
+                          getLandingCon.callAllMethods();
+                        },
+                        child: Container(
+                          child: Icon(Icons.refresh,
+                          color: Colors.white,
+                          ),
+                        ),
+                      ),
                       Container(
                         margin: EdgeInsets.only(right: 8),
                         child: Row(
@@ -68,7 +78,7 @@ class _LandingPageState extends State<LandingPage> {
               listView(_height, _width),
             ],
           ),
-        ),
+      ),
       ),
     );
   }
@@ -80,7 +90,7 @@ class _LandingPageState extends State<LandingPage> {
       child: ListView.builder(
         itemCount: getLandingCon.transaction.length,
         itemBuilder: (context, index) {
-          return Container(
+          return Obx(() { return Container(
             height: 55,
             width: _width,
             //color: Colors.red,
@@ -162,7 +172,7 @@ class _LandingPageState extends State<LandingPage> {
                 ),
               ],
             ),
-          );
+          );});
         },
       ),
     );
@@ -177,7 +187,7 @@ class _LandingPageState extends State<LandingPage> {
     ];
     var fraction, scale;
     if (_width < 500) {
-      fraction = 0.65;
+      fraction = 0.50;
       scale = 0.95;
     } else if (_width < 1000) {
       fraction = 0.40;
@@ -186,7 +196,8 @@ class _LandingPageState extends State<LandingPage> {
       fraction = 0.20;
       scale = 0.95;
     }
-    return Container(
+    return Obx(() {
+    return  Container(
       height: _height * 0.35,
       width: _width,
       child: new Swiper(
@@ -256,13 +267,15 @@ class _LandingPageState extends State<LandingPage> {
                                           Text(
                                             getLandingCon.spends[index].name,
                                             style: TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                                fontWeight: FontWeight.bold,
                                                 fontSize: 16,
                                                 color: Color(0xfff9feff)),
                                           ),
-                                          Text(dates[index],
+                                          Text(
+                                            dates[index],
                                             style: TextStyle(
-                                                color: Color(0xfff9feff)),),
+                                                color: Color(0xfff9feff)),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -271,16 +284,21 @@ class _LandingPageState extends State<LandingPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("\u20B9" +
-                                              getLandingCon.spends[index].spend
-                                                  .toString(),
+                                          Text(
+                                            "\u20B9" +
+                                                getLandingCon
+                                                    .spends[index].spend
+                                                    .toString(),
                                             style: TextStyle(
-                                                color: Color(0xfff9feff)),),
-                                          Text(getLandingCon
-                                              .spends[index].percentage
-                                              .toString(),
+                                                color: Color(0xfff9feff)),
+                                          ),
+                                          Text(
+                                            getLandingCon
+                                                .spends[index].percentage
+                                                .toString(),
                                             style: TextStyle(
-                                                color: Color(0xfff9feff)),),
+                                                color: Color(0xfff9feff)),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -297,6 +315,6 @@ class _LandingPageState extends State<LandingPage> {
           );
         },
       ),
-    );
+    );});
   }
 }

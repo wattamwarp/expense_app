@@ -17,10 +17,16 @@ class LandingPageController extends GetxController{
 
   @override
   void onInit() {
+    callAllMethods();
+    super.onInit();
+  }
+
+  void callAllMethods(){
+    spends.clear();
+    transaction.clear();
     generateSpends();
     generateTransaction();
     generateIncome();
-    super.onInit();
   }
 
   void generateSpends(){
