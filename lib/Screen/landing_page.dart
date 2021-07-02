@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:flutter_app_expense_app/Controller/landing_page_controller.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class LandingPage extends StatefulWidget {
@@ -31,7 +32,16 @@ class _LandingPageState extends State<LandingPage> {
           width: _width,
           color: Color(0xff1b1e31),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                margin: EdgeInsets.only(top: 10,left: 10),
+                child: Text(
+                  "PAYMENT CATEGORIES",
+                  style: TextStyle(
+                      color: Color(0xff565975), fontSize: 12),
+                ),
+              ),
               cards(_height, _width),
               Container(
                 height: 35,
@@ -47,16 +57,7 @@ class _LandingPageState extends State<LandingPage> {
                             style: TextStyle(
                                 color: Color(0xff565975), fontSize: 12),
                           )),
-                      InkWell(
-                        onTap: () {
-                          getLandingCon.callAllMethods();
-                        },
-                        child: Container(
-                          child: Icon(Icons.refresh,
-                          color: Colors.white,
-                          ),
-                        ),
-                      ),
+
                       Container(
                         margin: EdgeInsets.only(right: 8),
                         child: Row(
@@ -85,95 +86,102 @@ class _LandingPageState extends State<LandingPage> {
 
   Widget listView(var _height, _width) {
     return Container(
-      height: _height * 0.65 - 65,
+      height: _height * 0.65 - 85,
       width: _width,
-      child: ListView.builder(
-        itemCount: getLandingCon.transaction.length,
-        itemBuilder: (context, index) {
-          return Obx(() { return Container(
-            height: 55,
-            width: _width,
-            //color: Colors.red,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 11),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            margin: const EdgeInsets.only(left: 12, right: 12),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xff242947),
-                            ),
-                            child: Icon(
-                              Icons.transform,
-                              size: 20,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            width: 160,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  getLandingCon.transaction[index].name,
-                                  style: TextStyle(color: Color(0xfffefdff)),
-                                ),
-                                Text(
-                                  getLandingCon.transaction[index].day,
-                                  style: TextStyle(color: Color(0xff565975)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(right: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+      child: RefreshIndicator(
+        onRefresh: (){
+          return Future.delayed(
+            Duration(seconds: 1),
+                () {
+                  getLandingCon.callAllMethods();
+            },
+          );
+        },
+        child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: getLandingCon.transaction.length,
+          itemBuilder: (context, index) {
+            return Obx(() { return Container(
+              height: 55,
+              width: _width,
+              //color: Colors.red,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 11),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            Text(
-                              (getLandingCon.transaction[index].income
-                                      ? "+ "
-                                      : "- ") +
-                                  "\u20B9" +
-                                  getLandingCon.transaction[index].amt
-                                      .toString(),
-                              style: TextStyle(
-                                  color: getLandingCon.transaction[index].income
-                                      ? Color(0xff0dbb69)
-                                      : Color(0xffd75875)),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              margin: const EdgeInsets.only(left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xff242947),
+                              ),
+                              child: SvgPicture.asset('Assets/images/transfer.svg'),
                             ),
-                            Text(
-                              getLandingCon.transaction[index].time,
-                              style: TextStyle(color: Color(0xff5b607b)),
+                            Container(
+                              width: 160,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    getLandingCon.transaction[index].name,
+                                    style: TextStyle(color: Color(0xfffefdff)),
+                                  ),
+                                  Text(
+                                    getLandingCon.transaction[index].day,
+                                    style: TextStyle(color: Color(0xff565975)),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        Container(
+                          margin: EdgeInsets.only(right: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                (getLandingCon.transaction[index].income
+                                        ? "+ "
+                                        : "- ") +
+                                    "\u20B9" +
+                                    getLandingCon.transaction[index].amt
+                                        .toString(),
+                                style: TextStyle(
+                                    color: getLandingCon.transaction[index].income
+                                        ? Color(0xff0dbb69)
+                                        : Color(0xffd75875)),
+                              ),
+                              Text(
+                                getLandingCon.transaction[index].time,
+                                style: TextStyle(color: Color(0xff5b607b)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  width: _width,
-                  child: Divider(
-                    height: 1,
-                    color: Color(0xff272a3d),
+                  Container(
+                    width: _width,
+                    child: Divider(
+                      height: 1,
+                      color: Color(0xff272a3d),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );});
-        },
+                ],
+              ),
+            );});
+          },
+        ),
       ),
     );
   }
@@ -185,6 +193,8 @@ class _LandingPageState extends State<LandingPage> {
       "Last Payment 15 May",
       "Last Payment 28 May"
     ];
+    List<int> col1=[0xff6052e4,0xff188de0,0xfff99875,0xfff99875];
+    List<int> col2=[0xff857bef,0xff10a4a8,0xffe06b74,0xffe06b74];
     var fraction, scale;
     if (_width < 500) {
       fraction = 0.50;
@@ -205,7 +215,7 @@ class _LandingPageState extends State<LandingPage> {
         viewportFraction: fraction,
         scale: scale,
         loop: false,
-        autoplay: true,
+        autoplay: false,
         autoplayDelay: 6000,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
@@ -249,8 +259,8 @@ class _LandingPageState extends State<LandingPage> {
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: [
-                                      Color(0xff64E8DE),
-                                      Color(0xff8A64EB),
+                                      Color(col1[index]),
+                                      Color(col2[index]),
                                     ],
                                   ),
                                 ),
@@ -295,7 +305,7 @@ class _LandingPageState extends State<LandingPage> {
                                           Text(
                                             getLandingCon
                                                 .spends[index].percentage
-                                                .toString(),
+                                                .toString()+'%',
                                             style: TextStyle(
                                                 color: Color(0xfff9feff)),
                                           ),

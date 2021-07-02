@@ -27,6 +27,7 @@ class LandingPageController extends GetxController{
     generateSpends();
     generateTransaction();
     generateIncome();
+
   }
 
   void generateSpends(){
@@ -45,17 +46,14 @@ class LandingPageController extends GetxController{
       category= new Category(r, percentage==0?1:percentage, catName[j]);
       spends.add(category);
       sum = sum+r;
-      //max=max-sum;
+
 
     }
 
-    //int percentage=(10000 - sum)~/100;
     category= new Category((10000 - sum),(100-perSum), catName[3]);
     spends.add(category);
+    spends.sort((a, b) => b.spend.compareTo(a.spend));
 
-    // for(int i=0;i<4;i++){
-    //   print(a[i].name);
-    // }
 
   }
 
@@ -77,10 +75,9 @@ class LandingPageController extends GetxController{
 
 
     }
-    int id=rnd.nextInt(10);
+    int id = rnd.nextInt(10);
     tran=new Transaction(10000-sum, spendames[id],false,date[id],time[id]);
     transaction.add(tran);
-
 
   }
 
@@ -95,18 +92,14 @@ class LandingPageController extends GetxController{
     for(int j=0;j<3;j++){
 
       int  r = rnd.nextInt(max  -sum);
-      print("the income is "+r.toString());
+
       tran=new Transaction(r, "Sbi debit Card",true,date[4],time[5]);
       transaction.add(tran);
       sum = sum+r;
-      //max=max-sum;
-      //print("the number is "+r.toString());
-      //print("the sum is"+sum.toString());
 
     }
     tran=new Transaction(10000-sum, "Sbi debit Card",true,date[4],time[5]);
     transaction.add(tran);
-    //print("the number is"+transaction.last.toString());
 
   }
 }
